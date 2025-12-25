@@ -1,5 +1,20 @@
+import Link from "next/link";
+import { initialTickets } from "@/data";
+
 const TicketPage = () => {
-    return <h2 className="text-lg">Ticket Page</h2>;
+    return (
+        <div>
+            {initialTickets.map((ticket) => (
+                <div key={ticket.id}>
+                    <h2 className="text-lg">{ticket.title}</h2>
+
+                    <Link href={`/tickets/${ticket.id}`} className="text-sm underline">
+                        View
+                    </Link> 
+                </div>
+            ))}        
+        </div>
+    );
 };
 
 export default TicketPage;
