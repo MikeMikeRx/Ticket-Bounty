@@ -9,3 +9,5 @@ const TicketPage = async ({ params}: TicketPageProps) => {
 
     return <h2 className="text-lg">Ticket Page: {ticketId}</h2>;
 };
+
+export default TicketPage
