@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { initialTickets } from "@/data/data";
 import { ticketPath } from "@/constants/paths";
+import clsx from "clsx";
 
 const TICKET_ICONS = {
     OPEN: "O",
@@ -26,7 +27,13 @@ const TicketPage = () => {
                     >
                         <div>{TICKET_ICONS[ticket.status as keyof typeof TICKET_ICONS]}</div>
                         <h3 className="text-lg font-semibold truncate">{ticket.title}</h3>
-                        <p className="text-sm text-slate-500 truncate">{ticket.content}</p>                
+                        <p
+                            className={clsx("text-sm text-slate-500 truncate", {
+                                "line-through": ticket.status === "DONE"
+                            })}
+                            >
+                                {ticket.content}
+                        </p>               
                         <Link href={ticketPath(ticket.id)} className="text-sm underline">
                             View
                         </Link> 
