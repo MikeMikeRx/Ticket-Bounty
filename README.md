@@ -2,7 +2,9 @@
 
 A modern ticket management system built with Next.js 16, React 19, and Shadcn UI.
 
-![tickets-page](./screenshots/dark-mode.png)
+**Live Demo**: [View on Vercel](https://ticket-bounty-seven.vercel.app/)
+
+![tickets-page](./screenshots/tickets-page.png)
 
 ## Features (In Progress)
 
