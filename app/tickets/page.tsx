@@ -8,6 +8,7 @@ import {
 } from "@/components/ui/card";
 import { initialTickets } from "@/data/data";
 import { ticketPath } from "@/constants/paths";
+import { Separator } from "@/components/ui/separator";
 
 const DocumentIcon = () => (
     <svg
@@ -71,6 +72,8 @@ const TicketPage = () => {
                     All your tickets at one place
                 </p>
             </div>
+
+            <Separator/>
             
             <div className="flex-1 flex flex-col items-center gap-y-4 animate-fade-from-top">
                 {initialTickets.map((ticket) => (
