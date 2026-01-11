@@ -3,13 +3,12 @@ import clsx from "clsx";
 import {
     Card,
     CardContent,
-    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 import { ticketPath } from "@/constants/paths";
 import { TICKET_ICONS } from "../constants";
-import { Ticket } from "../types";
+import { Ticket } from "@prisma/client";
 import { LucideArrowUpRightFromSquare } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
