@@ -6,10 +6,14 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
-import { ticketPath } from "@/constants/paths";
+import { ticketEditPath, ticketPath } from "@/constants/paths";
 import { TICKET_ICONS } from "../constants";
 import { Ticket } from "@prisma/client";
-import { LucideArrowUpRightFromSquare, LucideTrash } from "lucide-react";
+import {
+    LucideArrowUpRightFromSquare,
+    LucidePencil,
+    LucideTrash
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { deleteTicket } from "../actions/delete-ticket";
 
@@ -35,6 +39,14 @@ const TicketItem = ({ ticket, isDetail }: TicketProps) => {
         </form>
     );
 
+    const editButton = (
+        <Button variant="outline" size="icon" asChild>
+            <Link prefetch href={ticketEditPath(ticket.id)}>
+                <LucidePencil className="h-4 w-4" />
+            </Link>
+        </Button>
+    );
+
     return (
         <div className={clsx("w-full max-w-md flex-gap-x-1", {
             "max-w-xl": isDetail,
@@ -58,12 +70,19 @@ const TicketItem = ({ ticket, isDetail }: TicketProps) => {
                 </CardContent>
             </Card>
             
-            <div className="flex flex-col gap-y-1">
-                {isDetail ? deleteButton : detailButton}
+            <div className="flex flex-row gap-y-1">
+                {isDetail ? (
+                    <>
+                        {editButton}
+                        {deleteButton}
+                    </>
+                ) : (
+                    <>
+                        {detailButton}
+                        {editButton}
+                    </>
+                )}
             </div>
-            {/* {isDetail ? null : (
-                <div className="flex flex-col gap-y-1">{detailButton}</div>
-            )} */}
         </div>
     );
 };
