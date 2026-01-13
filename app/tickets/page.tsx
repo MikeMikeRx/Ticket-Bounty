@@ -3,7 +3,7 @@ import { Heading } from "@/components/heading";
 import { Spinner } from "@/components/spinner";
 import { CardCompact } from "@/components/card-compact";
 import { TicketList } from "@/features/ticket/components/ticket-list";
-import { TicketCreateForm } from "@/features/ticket/components/ticket-create-form";
+import { TicketUpsertForm } from "@/features/ticket/components/ticket-upsert-form";
 
 export const runtime = "nodejs";
 
@@ -16,7 +16,7 @@ const TicketsPage = () => {
                 title="Create Ticket"
                 description="A new ticket will be created"
                 className="w-full max-w-105 self-center"
-                content={<TicketCreateForm />}
+                content={<TicketUpsertForm />}
             />
             
             <Suspense fallback={<Spinner/>}>
