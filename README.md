@@ -16,6 +16,8 @@ Ticket Bounty is a learning-focused project that explores **modern Next.js patte
 - Form state management
 - Validation and cache revalidation
 
+The application is being built as a hands-on learning exercise while studying The Road to Next by Robin Wieruch.
+
 🚧 The project is functional but **still evolving**.
 
 ---
