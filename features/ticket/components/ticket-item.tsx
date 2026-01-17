@@ -3,6 +3,7 @@ import clsx from "clsx";
 import {
     Card,
     CardContent,
+    CardFooter,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
@@ -68,6 +69,10 @@ const TicketItem = ({ ticket, isDetail }: TicketProps) => {
                         {ticket.content}
                     </span>
                 </CardContent>
+                <CardFooter className="flex justify-between">
+                    <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+                    <p className="text-sm text-muted-foreground">{ticket.bounty}</p>
+                </CardFooter>
             </Card>
             
             <div className="flex flex-row gap-y-1">
