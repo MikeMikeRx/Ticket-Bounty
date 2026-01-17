@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { upsertTicket } from "../actions/upsert-ticket";
+import { fromCent } from "@/utils/currency";
 
 type TicketUpsertFormProps = {
     ticket?: Ticket;
@@ -59,9 +60,10 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
                                 id="bounty"
                                 name="bounty"
                                 type="number"
+                                step="0.01"
                                 defaultValue={
                                     (actionState.payload?.get("bounty") as string) ??
-                                    ticket?.bounty
+                                    (ticket?.bounty ? fromCent(ticket.bounty) : "")
                                 }
                             />
                             <FieldError actionState={actionState} name="bounty" />
