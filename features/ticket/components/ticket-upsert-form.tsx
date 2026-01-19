@@ -1,6 +1,7 @@
 "use client";
 
 import { Ticket } from "@prisma/client";
+import { DatePicker } from "@/components/date-picker";
 import { SubmitButton } from "@/components/form/submit-button";
 import { FieldError } from "@/components/form/field-error";
 import { Form } from "@/components/form/form";
@@ -40,21 +41,20 @@ const TicketUpsertForm = ({ ticket }: TicketUpsertFormProps) => {
                     />
                     <FieldError actionState={actionState} name="content" />
 
-                    <div className="flex gap-x-2 mb-1">
-                        <div className="w-1/2">
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 mb-4">
+                        <div className="space-y-1">
                             <Label htmlFor="deadline">Deadline</Label>
-                            <Input
+                            <DatePicker
                                 id="deadline"
                                 name="deadline"
-                                type="date"
                                 defaultValue={
                                     (actionState.payload?.get("deadline") as string) ??
-                                    ticket?.deadline?.split("T")[0]
+                                    ticket?.deadline
                                 }
                             />
                             <FieldError actionState={actionState} name="deadline" />
                         </div>
-                        <div className="w-1/2">
+                        <div className="space-y-1">
                             <Label htmlFor="bounty">Bounty ($)</Label>
                             <Input
                                 id="bounty"
