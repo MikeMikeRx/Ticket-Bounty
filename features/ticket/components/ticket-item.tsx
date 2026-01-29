@@ -1,6 +1,5 @@
 import Link from "next/link";
 import clsx from "clsx";
-import { ConfirmDialog } from "@/components/confirm-dialog";
 import {
     Card,
     CardContent,
@@ -16,9 +15,7 @@ import {
     LucideArrowUpRightFromSquare,
     LucideMoreVertical,
     LucidePencil,
-    LucideTrash
 } from "lucide-react";
-import { deleteTicket } from "../actions/delete-ticket";
 import { toCurrencyFromCent } from "@/utils/currency";
 import { TicketMoreMenu } from "./ticket-more-menu";
 
@@ -36,17 +33,6 @@ const TicketItem = ({ ticket, isDetail }: TicketProps) => {
         </Button>
     );
 
-    const deleteButton = (
-        <ConfirmDialog
-            action={deleteTicket.bind(null, ticket.id)}
-            trigger={
-            <Button variant="outline" size="icon">
-                <LucideTrash className="h-4 w-4" />
-            </Button>
-            }
-        />
-    );
-
     const editButton = (
         <Button variant="outline" size="icon" asChild>
             <Link prefetch href={ticketEditPath(ticket.id)}>
@@ -54,7 +40,7 @@ const TicketItem = ({ ticket, isDetail }: TicketProps) => {
             </Link>
         </Button>
     );
-    
+
     const moreMenu = (
         <TicketMoreMenu
             ticket={ticket}
@@ -99,7 +85,6 @@ const TicketItem = ({ ticket, isDetail }: TicketProps) => {
                 {isDetail ? (
                     <>
                         {editButton}
-                        {deleteButton}
                         {moreMenu}
                     </>
                 ) : (
