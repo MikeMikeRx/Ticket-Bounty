@@ -6,3 +6,9 @@ export const TICKET_ICONS: Record<TicketStatus, React.ReactNode> = {
     DONE: <LucideCheckCircle />,
     IN_PROGRESS: <LucidePencil />,
 };
+
+export const TICKET_STATUS_LABELS = {
+    OPEN: "Open",
+    DONE: "Done",
+    IN_PROGRESS: "In Progress",
+};
