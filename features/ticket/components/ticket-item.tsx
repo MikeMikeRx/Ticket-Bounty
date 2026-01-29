@@ -7,17 +7,19 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { ticketEditPath, ticketPath } from "@/constants/paths";
 import { TICKET_ICONS } from "../constants";
 import { Ticket } from "@prisma/client";
 import {
     LucideArrowUpRightFromSquare,
+    LucideMoreVertical,
     LucidePencil,
     LucideTrash
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { deleteTicket } from "../actions/delete-ticket";
 import { toCurrencyFromCent } from "@/utils/currency";
+import { TicketMoreMenu } from "./ticket-more-menu";
 
 type TicketProps = {
     ticket: Ticket;
@@ -25,6 +27,17 @@ type TicketProps = {
 };
 
 const TicketItem = ({ ticket, isDetail }: TicketProps) => {
+    const moreMenu = (
+        <TicketMoreMenu
+            ticket={ticket}
+            trigger={
+                <Button variant="outline" size="icon">
+                    <LucideMoreVertical className="h-4 w-4" />
+                </Button>
+            }
+        />
+    );
+
     const detailButton = (
         <Button variant="outline" size="icon" asChild>
             <Link prefetch href={ticketPath(ticket.id)}>
@@ -83,6 +96,7 @@ const TicketItem = ({ ticket, isDetail }: TicketProps) => {
                     <>
                         {editButton}
                         {deleteButton}
+                        {moreMenu}
                     </>
                 ) : (
                     <>
