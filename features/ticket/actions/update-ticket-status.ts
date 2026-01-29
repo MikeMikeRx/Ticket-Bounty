@@ -10,6 +10,8 @@ import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/constants/paths";
 
 export const updateTicketStatus = async (id: string, status: TicketStatus) => {
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
     try {
         await prisma.ticket.update({
             where: {
