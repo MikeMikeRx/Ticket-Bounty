@@ -1,5 +1,6 @@
 import Link from "next/link";
 import clsx from "clsx";
+import { ConfirmDialog } from "@/components/confirm-dialog";
 import {
     Card,
     CardContent,
@@ -27,17 +28,6 @@ type TicketProps = {
 };
 
 const TicketItem = ({ ticket, isDetail }: TicketProps) => {
-    const moreMenu = (
-        <TicketMoreMenu
-            ticket={ticket}
-            trigger={
-                <Button variant="outline" size="icon">
-                    <LucideMoreVertical className="h-4 w-4" />
-                </Button>
-            }
-        />
-    );
-
     const detailButton = (
         <Button variant="outline" size="icon" asChild>
             <Link prefetch href={ticketPath(ticket.id)}>
@@ -47,11 +37,14 @@ const TicketItem = ({ ticket, isDetail }: TicketProps) => {
     );
 
     const deleteButton = (
-        <form action={deleteTicket.bind(null, ticket.id)}>
+        <ConfirmDialog
+            action={deleteTicket.bind(null, ticket.id)}
+            trigger={
             <Button variant="outline" size="icon">
                 <LucideTrash className="h-4 w-4" />
             </Button>
-        </form>
+            }
+        />
     );
 
     const editButton = (
@@ -60,6 +53,17 @@ const TicketItem = ({ ticket, isDetail }: TicketProps) => {
                 <LucidePencil className="h-4 w-4" />
             </Link>
         </Button>
+    );
+    
+    const moreMenu = (
+        <TicketMoreMenu
+            ticket={ticket}
+            trigger={
+                <Button variant="outline" size="icon">
+                    <LucideMoreVertical className="h-4 w-4" />
+                </Button>
+            }
+        />
     );
 
     return (
