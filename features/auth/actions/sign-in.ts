@@ -29,18 +29,18 @@ export const signIn = async (_actionState: ActionState, formData: FormData) => {
         });
 
         if (!user) {
-            return toActionState("ERROR", "Incorect email or password");
+            return toActionState("ERROR", "Incorect email or password", formData);
         }
 
         const validPassword = await verifyPassword(user.passwordHash, password);
         if(!validPassword) {
-            return toActionState("ERROR", "Incorrect email or password");
+            return toActionState("ERROR", "Incorrect email or password", formData);
         }
 
         const session = await createSession(user.id);
         await setSessionCookie(session.id, session.expiresAt);
     } catch (error) {
-        return fromErrorToActionState(error);
+        return fromErrorToActionState(error, formData);
     }
 
     redirect(ticketsPath());
