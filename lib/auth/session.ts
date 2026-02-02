@@ -19,7 +19,7 @@ export async function createSession(userId: string) {
         },
     });
 
-    return { id: expiresAt };
+    return { id, expiresAt };
 }
 
 export async function valiadateSession(sessionId: string) {
