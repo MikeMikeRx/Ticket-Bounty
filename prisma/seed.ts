@@ -2,10 +2,16 @@ import "dotenv/config";
 import { PrismaClient, TicketStatus } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
+import { hashPassword } from "../lib/auth/password";
 
 const pool = new Pool({ connectionString: process.env.DIRECT_URL });
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
+
+const users = [
+  { username: "admin", email: "admin@admin.com" },
+  { username: "user", email: "user@user.com" },
+];
 
 const tickets = [
   {
@@ -36,8 +42,24 @@ async function main() {
   console.log("DB Seed: Started ...");
 
   // DEV-ONLY pattern:
+  await prisma.user.deleteMany();  
   await prisma.ticket.deleteMany();
-  await prisma.ticket.createMany({ data: tickets });
+
+  const passwordHash = await hashPassword("geheimnis");
+
+  const dbUsers = await prisma.user.createManyAndReturn({
+    data: users.map((user) => ({
+      ...user,
+      passwordHash,
+    })),
+  });
+
+  await prisma.ticket.createMany({
+    data: tickets.map((ticket) => ({
+      ...ticket,
+      userId: dbUsers[0].id,
+    })),
+  });
 
   const t1 = performance.now();
   console.log(`DB Seed: Finished (${Math.round(t1 - t0)}ms)`);
