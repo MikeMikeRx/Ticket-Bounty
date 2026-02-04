@@ -6,7 +6,11 @@ export const getTicket = async (id: string) => {
             id,
         },
         include: {
-            user: true,
+            user: {
+                select: {
+                    username: true,
+                },
+            },
         },
     });
 };

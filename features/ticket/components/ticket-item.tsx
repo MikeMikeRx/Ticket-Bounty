@@ -10,6 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ticketEditPath, ticketPath } from "@/constants/paths";
 import { TICKET_ICONS } from "../constants";
+import { TicketWithMetadata } from "../types";
 import {
     LucideArrowUpRightFromSquare,
     LucideMoreVertical,
@@ -17,12 +18,9 @@ import {
 } from "lucide-react";
 import { toCurrencyFromCent } from "@/utils/currency";
 import { TicketMoreMenu } from "./ticket-more-menu";
-import { Prisma } from "@prisma/client";
 
 type TicketProps = {
-    ticket: Prisma.TicketGetPayload<{
-        include: { user: true };
-    }>;
+    ticket: TicketWithMetadata;
     isDetail?: boolean;
 };
 
