@@ -10,7 +10,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ticketEditPath, ticketPath } from "@/constants/paths";
 import { TICKET_ICONS } from "../constants";
-import { Ticket } from "@prisma/client";
 import {
     LucideArrowUpRightFromSquare,
     LucideMoreVertical,
@@ -18,9 +17,12 @@ import {
 } from "lucide-react";
 import { toCurrencyFromCent } from "@/utils/currency";
 import { TicketMoreMenu } from "./ticket-more-menu";
+import { Prisma } from "@prisma/client";
 
 type TicketProps = {
-    ticket: Ticket;
+    ticket: Prisma.TicketGetPayload<{
+        include: { user: true };
+    }>;
     isDetail?: boolean;
 };
 
@@ -74,7 +76,9 @@ const TicketItem = ({ ticket, isDetail }: TicketProps) => {
                     </span>
                 </CardContent>
                 <CardFooter className="flex justify-between">
-                    <p className="text-sm text-muted-foreground">{ticket.deadline}</p>
+                    <p className="text-sm text-muted-foreground">
+                        {ticket.deadline} by {ticket.user.username}
+                    </p>
                     <p className="text-sm text-muted-foreground">
                         {toCurrencyFromCent(ticket.bounty)}
                     </p>
