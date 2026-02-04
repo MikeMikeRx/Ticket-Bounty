@@ -2,17 +2,19 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { prisma } from "@/lib/prisma";
 import { z } from "zod";
-import { signInPath, ticketPath, ticketsPath } from "@/constants/paths";
+
+import { prisma } from "@/lib/prisma";
+import { ticketPath, ticketsPath } from "@/constants/paths";
 import {
     ActionState,
     fromErrorToActionState,
     toActionState,
 } from "@/components/form/utils/to-action-state";
+import { getAuthOrRedirect } from "@/features/auth/queries/get-auth-or-redirect";
 import { setCookieByKey } from "@/actions/cookies";
 import { toCent } from "@/utils/currency";
-import { getAuth } from "@/features/auth/queries/get-auth";
+import { isOwner } from "@/features/auth/utils/is-owner";
 
 const upsertTicketSchema = z.object({
     title: z.string().min(1).max(191),
@@ -26,10 +28,17 @@ export const upsertTicket = async (
     _actionState: ActionState,
     formData: FormData
 ) => {
-    const { user } = await getAuth();
+    const { user } = await getAuthOrRedirect();
 
-    if (!user) {
-        redirect(signInPath());
+    if (id) {
+        const ticket = await prisma.ticket.findUnique({
+            where: { id },
+            select: { userId: true },
+        });
+
+        if(!ticket || !isOwner(user, ticket)) {
+            return toActionState("ERROR", "Not authorized");
+        }
     }
 
     try {
@@ -41,25 +50,16 @@ export const upsertTicket = async (
         });
 
         const dbData = {
-            title: data.title,
-            content: data.content,
-            deadline: data.deadline,
+            ...data,
+            userId: user.id,
             bounty: toCent(data.bounty),
         };
 
-        if (id) {
-            await prisma.ticket.update({
-                where: { id },
-                data: dbData,
-            });
-        } else {
-            await prisma.ticket.create({
-                data: {
-                    ...dbData,
-                    userId: user.id,
-                },
-            });
-        }
+        await prisma.ticket.upsert({
+            where: { id: id || "" },
+            update: dbData,
+            create: dbData
+        });
     } catch(error) {
         return fromErrorToActionState(error, formData);
     }

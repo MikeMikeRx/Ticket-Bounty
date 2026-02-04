@@ -6,16 +6,29 @@ import {
     fromErrorToActionState,
     toActionState,
 } from "@/components/form/utils/to-action-state";
+import { getAuthOrRedirect } from "@/features/auth/queries/get-auth-or-redirect";
 import { prisma } from "@/lib/prisma";
 import { ticketsPath } from "@/constants/paths";
+import { isOwner } from "@/features/auth/utils/is-owner";
 
 export const updateTicketStatus = async (id: string, status: TicketStatus) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const { user } = await getAuthOrRedirect();
 
     try {
+        const ticket = await prisma.ticket.findUnique({
+            where: {
+                id,
+            },
+        });
+
+        if(!ticket || !isOwner(user, ticket)) {
+            return toActionState("ERROR", "Not authorized");
+        }
+
         await prisma.ticket.update({
             where: {
                 id,
+                userId: user.id,
             },
             data: {
                 status,
