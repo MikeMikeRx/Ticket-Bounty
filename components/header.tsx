@@ -16,18 +16,10 @@ const Header = () => {
     return null;
   }
 
-  const navItems = user ?(
-    <>
-      <Link
-        href={ticketsPath()}
-        className={buttonVariants({ variant: "outline" })}
-      >
-        Ticket
-      </Link>
-      <form action={signOut}>
-        <SubmitButton label="Sign Out" icon={<LucideLogOut />} />
-      </form>
-    </>
+  const navItems = user ? (
+    <form action={signOut}>
+      <SubmitButton label="Sign Out" icon={<LucideLogOut />} />
+    </form>
 ) : (
     <>
       <Link
@@ -42,9 +34,6 @@ const Header = () => {
       >
         Sign In
       </Link>
-      <form action={signOut}>
-        <SubmitButton label="Sign Out" icon={<LucideLogOut />} />
-      </form>
     </>
   );
 
@@ -67,7 +56,7 @@ const Header = () => {
                 <h1 className="text-lg font-semibold">Ticket Bounty</h1>
               </Link>
           </div>
-
+          
           <div className="flex items-center gap-x-2">
             <ThemeSwitcher />
             {navItems}

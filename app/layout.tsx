@@ -4,7 +4,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Header } from "@/components/header";
 import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import { RedirectToast } from "@/components/redirect-toast";
+import { Sidebar } from "@/components/sidebar/components/sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,17 +31,20 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider>
           <Header />
-          <main
-            className="
-                min-h-screen flex-1
-                overflow-y-auto overflow-x-hidden
-                py-24 px-8
-                bg-secondary/20
-                flex flex-col
-                "
-          >
-            {children}
-          </main>
+          <div className="flex h-screen overflow-hidden border-collapse">
+            <Sidebar />
+            <main
+              className="
+                  min-h-screen flex-1
+                  overflow-y-auto overflow-x-hidden
+                  py-24 px-8
+                  bg-secondary/20
+                  flex flex-col
+                  "
+            >
+              {children}
+            </main>
+          </div>
           <Toaster expand />
         </ThemeProvider>
       </body>
