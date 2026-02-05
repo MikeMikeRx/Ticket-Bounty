@@ -1,5 +1,5 @@
-import { LucideBook, LucideLibrary } from "lucide-react";
-import { homePath, ticketsPath } from "@/constants/paths";
+import { LucideBook, LucideCircleUser, LucideLibrary } from "lucide-react";
+import { accountProfilePath, homePath, ticketsPath } from "@/constants/paths";
 import { NavItem } from "./types";
 
 export const navItems: NavItem[] = [
@@ -13,6 +13,12 @@ export const navItems: NavItem[] = [
         icon: LucideBook,
         href: ticketsPath(),
     },
+    {
+        separator: true,
+        title: "Account",
+        icon: LucideCircleUser,
+        href: accountProfilePath(),
+    }
 ];
 
 export const closedClassName =
