@@ -4,8 +4,8 @@ import Link from "next/link";
 import { LucideKanban } from "lucide-react";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { homePath, signInPath, signUpPath } from "@/constants/paths";
-import { ThemeSwitcher } from "./theme/theme-switcher";
-import { buttonVariants } from "./ui/button";
+import { ThemeSwitcher } from "@/components/theme/theme-switcher";
+import { buttonVariants } from "@/components/ui/button";
 import { AccountDropdown } from "./account-dropdown";
 
 const Header = () => {

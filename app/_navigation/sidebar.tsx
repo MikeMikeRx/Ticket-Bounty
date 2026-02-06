@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import { navItems } from "../constants";
-import { SidebarItem } from "./sidebar-item";
+import { navItems } from "../../components/sidebar/constants";
+import { SidebarItem } from "../../components/sidebar/components/sidebar-item";
 import { useAuth } from "@/features/auth/hooks/use-auth";
 import { usePathname } from "next/navigation";
 import { getActivePath } from "@/utils/get-active-path";
