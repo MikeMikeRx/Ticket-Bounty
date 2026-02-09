@@ -17,7 +17,7 @@ const HomePage = async({ searchParams }: HomePageProps) => {
         description="Tickets by everyone at one place"
       />
       <Suspense fallback={<Spinner />}>
-        <TicketList searchParams={searchParamsCache.parse(searchParams)} />
+        <TicketList searchParams={searchParamsCache.parse(await searchParams)} />
       </Suspense>
     </div>
   );

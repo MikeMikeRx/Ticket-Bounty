@@ -29,7 +29,7 @@ const TicketsPage = async({ searchParams}: TicketPageProps) => {
             />
             
             <Suspense fallback={<Spinner/>}>
-                <TicketList userId={user?.id} searchParams={searchParamsCache.parse(searchParams)} />
+                <TicketList userId={user?.id} searchParams={searchParamsCache.parse(await searchParams)} />
             </Suspense>
         </div>
     );
