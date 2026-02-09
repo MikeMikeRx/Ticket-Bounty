@@ -6,7 +6,7 @@ import { SearchParams } from "nuqs/server";
 import { searchParamsCache } from "@/features/ticket/search-params";
 
 type HomePageProps = {
-  searchParams: SearchParams;
+  searchParams: Promise<SearchParams>;
 };
 
 const HomePage = async({ searchParams }: HomePageProps) => {
