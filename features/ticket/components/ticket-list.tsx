@@ -1,6 +1,7 @@
 import { TicketItem } from "./ticket-item";
 import { getTickets } from "../queries/get-tickets";
 import { Placeholder } from "@/components/placeholder";
+import { TicketPagination } from "./ticket-pagination"
 import { TicketSearchInput } from "./ticket-search-input";
 import { TicketSortSelect } from "./ticket-sort-select";
 import { ParsedSearchParams } from "../search-params";
@@ -44,6 +45,10 @@ const TicketList = async ({ userId, searchParams }: TicketListProps) => {
             ) : (
                 <Placeholder label="No Tickets found" />
             )}
+
+            <div className="w-full max-w-105">
+                <TicketPagination />
+            </div>
         </div>
     );
 };
