@@ -73,7 +73,7 @@ const TicketItem = async({ ticket, isDetail }: TicketProps) => {
                         </CardTitle>
                     </CardHeader>
                     <CardContent>
-                        <span className={clsx("line-clamp-3 whitespace-break-spaces", {
+                        <span className={clsx("whitespace-break-spaces", {
                             "line-clamp-3": !isDetail,
                             })}
                         >
@@ -90,7 +90,7 @@ const TicketItem = async({ ticket, isDetail }: TicketProps) => {
                     </CardFooter>
                 </Card>
                 
-                <div className="flex flex-row gap-y-1">
+                <div className="flex flex-col gap-y-1">
                     {isDetail ? (
                         <>
                             {editButton}
