@@ -22,7 +22,7 @@ export async function createSession(userId: string) {
     return { id, expiresAt };
 }
 
-export async function valiadateSession(sessionId: string) {
+export async function validateSession(sessionId: string) {
     const session = await prisma.session.findUnique({
         where: { id: sessionId },
         include: { user: true },

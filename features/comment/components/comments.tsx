@@ -22,7 +22,7 @@ const Comments = async ({ ticketId }: CommentsProps) => {
                 content={<CommentCreateForm ticketId={ticketId} />}
             />
 
-            <div className="flx flex-col gap-y-2 ml-8">
+            <div className="flex flex-col gap-y-2 ml-8">
                 {comments.map((comment) => (
                     <CommentItem
                         key={comment.id}
