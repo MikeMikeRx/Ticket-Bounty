@@ -1,6 +1,6 @@
 # Ticket Bounty
 
-A modern ticket management system built with Next.js App Router, React Server Actions, Prisma, and Shadcn UI.
+A ticket management system built with Next.js App Router, React Server Actions, Prisma, and Shadcn UI.
 
 **Live Demo**: [View on Vercel](https://ticket-bounty-seven.vercel.app/)
 
@@ -10,14 +10,17 @@ A modern ticket management system built with Next.js App Router, React Server Ac
 
 ## Overview
 
-Ticket Bounty is a learning-focused project that explores **modern Next.js patterns**:
+Ticket Bounty is a high-performance ticket management system designed to showcase modern Full-stack Next.js patterns:
+
 - Server Actions for mutations
 - App Router with layouts and route guards
 - Session-based authentication
 - Form state management with useActionState
 - Zod validation and cache revalidation
 
-This project is built while studying *The Road to Next* by Robin Wieruch.
+It focuses on type-safe data fetching, robust server-side state management, and a seamless user experience using the latest React Server Components architecture.
+
+- 🚧 The project is functional but still evolving.
 
 ---
 
@@ -35,10 +38,23 @@ This project is built while studying *The Road to Next* by Robin Wieruch.
 - **Status Workflow**: Update ticket status (Open → In Progress → Done) via dropdown menu
 - **Deadline & Bounty**: Date picker for deadlines, currency input with cent-precision (big.js)
 - **Scoped Views**: "All Tickets" (public) and "My Tickets" (user's own)
+- **Search & Sort**: Debounced search by title, sort by newest/oldest/bounty via URL state (nuqs)
+- **Pagination**: Configurable page size with next/previous navigation
+
+### Comments
+- **Comment System**: Add and delete comments on ticket detail pages
+- **Ownership Controls**: Users can only delete their own comments
+- **Deleted User Handling**: Comments persist when user is deleted (SetNull relation)
+
+### Account Management
+- **Account Dropdown**: Avatar menu with profile, password, and sign-out
+- **Profile Page**: User profile settings with tab navigation
+- **Password Page**: Password management with tab navigation
 
 ### Server-Side Architecture
-- **Server Actions**: All mutations handled server-side (no API routes)
+- **Server Actions**: All mutations handled server-side
 - **Server Components**: Direct database queries in async components
+- **API Routes**: REST endpoints for tickets (`/api/tickets`)
 - **Cache Revalidation**: Efficient path-based cache invalidation
 
 ### Form Handling
@@ -50,7 +66,9 @@ This project is built while studying *The Road to Next* by Robin Wieruch.
 - **DatePicker Reset**: Imperative reset on successful submission
 
 ### User Interface
-- **Sidebar Navigation**: Expandable sidebar with hover animations
+- **Sidebar Navigation**: Expandable sidebar with hover animations and active path detection
+- **Account Dropdown**: Avatar with profile/password/sign-out menu
+- **Breadcrumbs**: Navigation breadcrumbs on detail pages
 - **Dark/Light Mode**: Theme toggle with next-themes
 - **Modern UI**: Shadcn UI components + Tailwind CSS v4
 - **Loading Skeletons**: Suspense boundaries with spinner fallbacks
@@ -81,6 +99,7 @@ This project is built while studying *The Road to Next* by Robin Wieruch.
 | **Notifications** | Sonner |
 | **Theme** | next-themes |
 | **Date Handling** | date-fns + react-day-picker |
+| **URL State** | nuqs |
 | **Currency** | big.js |
 
 ---
@@ -91,33 +110,49 @@ This project is built while studying *The Road to Next* by Robin Wieruch.
 ticket-bounty/
 ├── app/
 │   ├── page.tsx                    # Home page (All Tickets)
-│   ├── layout.tsx                  # Root layout (Header, Sidebar, ThemeProvider)
+│   ├── layout.tsx                  # Root layout (NuqsAdapter, Header, Sidebar, ThemeProvider)
 │   ├── template.tsx                # Route template with RedirectToast
 │   ├── globals.css                 # Global styles and theme
 │   ├── sign-in/page.tsx            # Sign-in page
 │   ├── sign-up/page.tsx            # Sign-up page
-│   └── tickets/
-│       ├── layout.tsx              # Auth guard layout
-│       ├── page.tsx                # My Tickets + create form
+│   ├── _navigation/                # Co-located navigation components
+│   │   ├── header.tsx              # Top navigation bar
+│   │   ├── sidebar.tsx             # Collapsible sidebar
+│   │   └── account-dropdown.tsx    # User avatar menu
+│   ├── api/
+│   │   └── tickets/                # REST API endpoints
+│   │       ├── route.ts            # GET all tickets
+│   │       └── [ticketId]/route.ts # GET single ticket
+│   └── (authenticated)/            # Protected route group
+│       ├── layout.tsx              # Auth guard (getAuthOrRedirect)
 │       ├── error.tsx               # Error boundary
-│       └── [ticketId]/
-│           ├── page.tsx            # Ticket detail page
-│           ├── loading.tsx         # Loading skeleton
-│           ├── not-found.tsx       # 404 page
-│           └── edit/page.tsx       # Ticket edit page (owner-only)
+│       ├── tickets/
+│       │   ├── page.tsx            # My Tickets + create form
+│       │   └── [ticketId]/
+│       │       ├── page.tsx        # Ticket detail + comments
+│       │       ├── edit/page.tsx   # Ticket edit (owner-only)
+│       │       ├── loading.tsx     # Loading skeleton
+│       │       └── not-found.tsx   # 404 page
+│       └── account/
+│           ├── profile/page.tsx    # User profile page
+│           ├── password/page.tsx   # Password management page
+│           └── _navigation/tabs.tsx # Profile/Password tab nav
 ├── actions/
 │   └── cookies.ts                  # Cookie server actions (get, set, consume)
 ├── components/
-│   ├── ui/                         # Shadcn UI components
-│   ├── form/                       # Form components (SubmitButton, FieldError)
+│   ├── ui/                         # Shadcn UI components (14 components)
+│   ├── form/                       # Form components (Form, SubmitButton, FieldError)
 │   │   ├── hooks/                  # useActionFeedback hook
 │   │   └── utils/                  # ActionState utilities
 │   ├── sidebar/                    # Sidebar navigation
-│   │   ├── components/             # Sidebar, SidebarItem
+│   │   ├── components/             # SidebarItem
 │   │   ├── constants.tsx           # Nav items configuration
 │   │   └── types.ts                # NavItem type
 │   ├── theme/                      # ThemeProvider, ThemeSwitcher
-│   ├── header.tsx                  # Top navigation bar
+│   ├── breadcrumbs.tsx             # Breadcrumb navigation
+│   ├── search-input.tsx            # Debounced search input
+│   ├── sort-select.tsx             # Sort dropdown (composite key)
+│   ├── pagination.tsx              # Pagination controls
 │   ├── date-picker.tsx             # Calendar popover date picker
 │   ├── confirm-dialog.tsx          # Confirmation dialog hook + UI
 │   ├── redirect-toast.tsx          # Post-redirect toast via cookies
@@ -130,12 +165,20 @@ ticket-bounty/
 │   │   ├── queries/                # getAuth, getAuthOrRedirect
 │   │   ├── hooks/                  # useAuth client hook
 │   │   └── utils/                  # isOwner utility
-│   └── ticket/
-│       ├── actions/                # upsert, delete, status
-│       ├── components/             # TicketList, TicketItem, TicketUpsertForm
-│       ├── queries/                # getTicket, getTickets
-│       ├── constants.tsx           # Status icons and labels
-│       └── types.ts                # TicketWithMetadata type
+│   ├── ticket/
+│   │   ├── actions/                # upsert, delete, status
+│   │   ├── components/             # TicketList, TicketItem, TicketUpsertForm,
+│   │   │                           # TicketSearchInput, TicketSortSelect, TicketPagination
+│   │   ├── queries/                # getTicket, getTickets (with pagination)
+│   │   ├── search-params.ts        # nuqs search/sort/pagination parsers
+│   │   ├── constants.tsx           # Status icons and labels
+│   │   └── types.ts                # TicketWithMetadata type
+│   └── comment/
+│       ├── actions/                # createComment, deleteComment
+│       ├── components/             # Comments, CommentItem, CommentCreateForm,
+│       │                           # CommentDeleteButton
+│       ├── queries/                # getComments
+│       └── types.ts                # CommentWithMetaData type
 ├── constants/
 │   └── paths.ts                    # Route path constants
 ├── lib/
@@ -147,11 +190,14 @@ ticket-bounty/
 │   ├── big.ts                      # big.js configuration
 │   └── utils.ts                    # Utility functions (cn)
 ├── utils/
-│   └── currency.ts                 # Currency conversion (toCent, fromCent)
-└── prisma/
-    ├── schema.prisma               # Database schema (User, Session, Ticket)
-    ├── seed.ts                     # Database seeding script
-    └── migrations/                 # Migration history
+│   ├── currency.ts                 # Currency conversion (toCent, fromCent)
+│   ├── get-active-path.ts          # Levenshtein-based path matching
+│   └── url.ts                      # Base URL helper
+├── prisma/
+│   ├── schema.prisma               # Database schema (User, Session, Ticket, Comment)
+│   ├── seed.ts                     # Database seeding script
+│   └── migrations/                 # Migration history
+└── prisma.config.ts                # Prisma configuration
 ```
 
 ## Getting Started
@@ -212,13 +258,14 @@ model User {
   passwordHash String
   sessions     Session[]
   tickets      Ticket[]
+  comments     Comment[]
 }
 
 model Session {
   id        String   @id
   expiresAt DateTime
   userId    String
-  user      User     @relation(...)
+  user      User     @relation(onDelete: Cascade)
 }
 
 model Ticket {
@@ -231,7 +278,18 @@ model Ticket {
   deadline  String
   bounty    Int          // Stored in cents
   userId    String
-  user      User         @relation(...)
+  user      User         @relation(onDelete: Cascade)
+  comments  Comment[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  content   String   @db.VarChar(1024)
+  ticketId  String
+  ticket    Ticket   @relation(onDelete: Cascade)
+  userId    String?
+  user      User?    @relation(onDelete: SetNull)
 }
 
 enum TicketStatus {
@@ -275,19 +333,24 @@ type ActionState = {
 - Session-based auth with HTTP-only cookies
 - Ownership-based authorization
 - Core ticket CRUD operations
+- Comment system (create, delete with ownership checks)
 - Server Actions + Zod validation
 - Form UX with ActionState pattern
 - Cache revalidation on mutations
 - Ticket status workflow (Open → In Progress → Done)
 - Deadline and bounty fields with currency handling
+- URL-synced search, sort, and pagination (nuqs)
+- REST API endpoints for tickets
 - Toast notifications and post-redirect feedback
 - Confirmation dialogs for destructive actions
-- Sidebar navigation with All Tickets / My Tickets views
+- Sidebar navigation with All Tickets / My Tickets / Account
+- Account dropdown with profile and password pages
+- Breadcrumb navigation
 - Dark/light theme toggle
 - Error boundaries and loading skeletons
 
 **Planned**
-- Search & filtering
-- Pagination
-- User profiles
+- User profile editing
+- Password change form
+- Password reset flow
 - Ticket assignments
