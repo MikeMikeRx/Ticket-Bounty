@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import clsx from "clsx";
 import {
@@ -8,6 +9,7 @@ import {
     CardTitle,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { ticketEditPath, ticketPath } from "@/constants/paths";
 import { TICKET_ICONS } from "../constants";
 import { TicketWithMetadata } from "../types";
@@ -105,7 +107,18 @@ const TicketItem = async({ ticket, isDetail }: TicketProps) => {
                 </div>
             </div>
 
-            {isDetail ? <Comments ticketId={ticket.id} /> : null}
+            {isDetail ? (
+                <Suspense fallback={
+                    <div className="flex flex-col gap-y-4">
+                        <Skeleton className="h-62.5 w-full" />
+                        <Skeleton className="h-20 ml-8" />
+                        <Skeleton className="h-20 ml-8" />
+
+                    </div>
+                }>
+                    <Comments ticketId={ticket.id} />
+                </Suspense>
+                ) : null}
         </div>
     );
 };
