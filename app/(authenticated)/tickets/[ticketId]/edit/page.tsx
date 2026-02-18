@@ -12,14 +12,12 @@ type TicketEditPageProps = {
 };
 
 const TicketEditPage = async ({params}: TicketEditPageProps) => {
-    const { user } = await getAuth();
     const { ticketId } = await params;
     const ticket = await getTicket(ticketId);
 
     const isTicketFound = !!ticket;
-    const isTicketOwner = isOwner(user, ticket);
 
-    if (!isTicketFound || !isTicketOwner) {
+    if (!isTicketFound || !ticket.isOwner) {
         notFound();
     }
 
