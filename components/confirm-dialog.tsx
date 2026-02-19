@@ -1,25 +1,35 @@
-import { cloneElement, useActionState, useEffect, useRef, useState } from "react";
+import {
+  cloneElement,
+  useActionState,
+  useEffect,
+  useRef,
+  useState,
+  type MouseEventHandler,
+  type ReactElement,
+} from "react";
 import { useActionFeedback } from "./form/hooks/use-action-feedback";
 import { ActionState, EMPTY_ACTION_STATE } from "./form/utils/to-action-state";
 import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
 
+type TriggerProps = { onClick?: MouseEventHandler<HTMLElement> };
+
 type UseConfirmDialogArgs = {
-    title?: string;
-    description?: string;
-    action: () => Promise<ActionState>;
-    trigger: React.ReactElement<{ onClick?: React.MouseEventHandler }>;
-    onSuccess?: (actionState: ActionState) => void;
+  title?: string;
+  description?: string;
+  action: () => Promise<ActionState>;
+  trigger: ReactElement<TriggerProps> | ((isLoading: boolean) => ReactElement<TriggerProps>);
+  onSuccess?: (actionState: ActionState) => void;
 };
 
 const useConfirmDialog = ({
@@ -31,11 +41,17 @@ const useConfirmDialog = ({
 }: UseConfirmDialogArgs) => {
     const [isOpen, setIsOpen] = useState(false);
 
-    const dialogTrigger = cloneElement(trigger, {
-        onClick: () => setIsOpen((state) => !state)
-    });
+    const [actionState, formAction, isPending] = useActionState(
+        action,
+        EMPTY_ACTION_STATE
+    );
 
-    const [actionState, formAction, isPending] = useActionState(action, EMPTY_ACTION_STATE);
+    const dialogTrigger = cloneElement(
+        typeof trigger === "function" ? trigger(isPending) : trigger, 
+        {
+        onClick: () => setIsOpen((state) => !state),
+        }
+    );
 
     useActionFeedback(actionState, {
         onSuccess: ({ actionState }) => {
