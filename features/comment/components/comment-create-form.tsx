@@ -20,8 +20,10 @@ const CommentCreateForm = ({ ticketId, onCreateComment }: CommentCreateFormProps
         EMPTY_ACTION_STATE
     );
 
-    const handleSuccess = (actionState: ActionState) => {
-        onCreateComment?.(actionState.data as CommentWithMetaData);
+    const handleSuccess = (
+        actionState: ActionState<CommentWithMetaData | undefined>
+    ) => {
+        onCreateComment?.(actionState.data);
     }
 
     return (
