@@ -10,17 +10,25 @@ A ticket management system built with Next.js App Router, React Server Actions, 
 
 ## Overview
 
-Ticket Bounty is a high-performance ticket management system designed to showcase modern Full-stack Next.js patterns:
+Ticket Bounty is a full-stack ticket management platform where users post tasks or issues with a monetary bounty attached. The idea is simple: describe a problem, set a deadline and a reward (the "bounty"), and track its progress until it's resolved.
 
-- Server Actions for mutations
-- App Router with layouts and route guards
-- Session-based authentication
-- Form state management with useActionState
-- Zod validation and cache revalidation
+> 🚧 The project is functional but still evolving.
 
-It focuses on type-safe data fetching, robust server-side state management, and a seamless user experience using the latest React Server Components architecture.
+---
 
-- 🚧 The project is functional but still evolving.
+## How It Works
+
+1. **Sign up / Sign in** — Create an account with a username, email, and password. Sessions are stored in the database and managed via HTTP-only cookies.
+
+2. **Browse tickets** — The home page lists all tickets publicly. Filter by title, sort by date or bounty size, and paginate through results. No login required.
+
+3. **Create a ticket** — Authenticated users can open the "My Tickets" view and submit a new ticket with a title, description, status, deadline, and bounty amount (stored in cents for precision).
+
+4. **Manage your tickets** — Owners can edit ticket details or update the status (Open → In Progress → Done) from a dropdown. Destructive actions require confirmation.
+
+5. **Comment on tickets** — Any authenticated user can add comments to a ticket detail page. Comments load with offset-based pagination and a "Load More" button. New comments appear instantly via client-side state — no full page reload. Owners can delete their own comments.
+
+6. **Account settings** — Users have a profile page and a password management page, accessible from the account dropdown in the header.
 
 ---
 
@@ -43,6 +51,8 @@ It focuses on type-safe data fetching, robust server-side state management, and 
 
 ### Comments
 - **Comment System**: Add and delete comments on ticket detail pages
+- **Offset Pagination**: Load more comments on demand (skip/take with `$transaction` for consistency)
+- **Client-Side State**: New comments prepend instantly; deleted comments disappear without a page reload
 - **Ownership Controls**: Users can only delete their own comments
 - **Deleted User Handling**: Comments persist when user is deleted (SetNull relation)
 
