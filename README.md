@@ -37,6 +37,8 @@ Ticket Bounty is a full-stack ticket management platform where users post tasks 
 | **Date Handling** | date-fns + react-day-picker |
 | **URL State** | nuqs |
 | **Currency** | big.js |
+| **Server State** | TanStack Query |
+| **Infinite Scroll** | react-intersection-observer |
 
 
 ## How It Works
@@ -49,7 +51,7 @@ Ticket Bounty is a full-stack ticket management platform where users post tasks 
 
 4. **Manage your tickets** — Owners can edit ticket details or update the status (Open → In Progress → Done) from a dropdown. Destructive actions require confirmation.
 
-5. **Comment on tickets** — Any authenticated user can add comments to a ticket detail page. Comments load with offset-based pagination and a "Load More" button. New comments appear instantly via client-side state — no full page reload. Owners can delete their own comments.
+5. **Comment on tickets** — Any authenticated user can add comments to a ticket detail page. Comments use cursor-based infinite scroll — new pages load automatically as you scroll. New comments appear instantly via client-side state — no full page reload. Owners can delete their own comments.
 
 6. **Account settings** — Users have a profile page and a password management page, accessible from the account dropdown in the header.
 
