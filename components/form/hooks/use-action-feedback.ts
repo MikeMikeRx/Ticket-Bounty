@@ -15,9 +15,9 @@ const useActionFeedback = (
     options: UseActionFeedbackOptions
 ) => {
     const prevTimestamp = useRef(actionState.timestamp);
-    const isUpdate = prevTimestamp.current !== actionState.timestamp;
 
     useEffect(() => {
+        const isUpdate = prevTimestamp.current !== actionState.timestamp;
         if(!isUpdate) return;
 
         if (actionState.status === "SUCCESS") {
@@ -28,7 +28,7 @@ const useActionFeedback = (
         }
 
         prevTimestamp.current = actionState.timestamp;
-    }, [isUpdate, actionState, options]);
+    }, [actionState, options]);
 };
 
 export { useActionFeedback };
