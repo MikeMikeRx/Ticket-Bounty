@@ -1,18 +1,14 @@
 import { useEffect, useRef } from "react";
 import { ActionState } from "../utils/to-action-state";
 
-type OnArgs = {
-    actionState: ActionState;
+type UseActionFeedbackOptions<T = unknown> = {
+    onSuccess?: (actionState: ActionState<T>) => void;
+    onError?: (actionState: ActionState<T>) => void;
 };
 
-type UseActionFeedbackOptions = {
-    onSuccess?: (OnArgs: OnArgs) => void;
-    onError?: (OnArgs: OnArgs) => void;
-};
-
-const useActionFeedback = (
-    actionState: ActionState,
-    options: UseActionFeedbackOptions
+const useActionFeedback = <T = unknown>(
+    actionState: ActionState<T>,
+    options: UseActionFeedbackOptions<T>
 ) => {
     const prevTimestamp = useRef(actionState.timestamp);
 
@@ -21,10 +17,10 @@ const useActionFeedback = (
         if(!isUpdate) return;
 
         if (actionState.status === "SUCCESS") {
-            options.onSuccess?.({ actionState });
+            options.onSuccess?.(actionState);
         }
         if (actionState.status === "ERROR") {
-            options.onError?.({ actionState });
+            options.onError?.(actionState);
         }
 
         prevTimestamp.current = actionState.timestamp;
