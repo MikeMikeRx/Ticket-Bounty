@@ -8,6 +8,7 @@ Ticket Bounty is a full-stack ticket management platform where users post tasks 
 
 **Live Demo**: [View on Vercel](https://ticket-bounty-seven.vercel.app/)
 
+📙 Author notes: See [AUTHOR_NOTES.md](/AUTHOR_NOTES.md) for the motivation, background, and design decisions behind this project.
 
 ## Key Highlights
 
